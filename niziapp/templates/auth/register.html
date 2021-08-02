@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>Register</title>
+{% endblock %}
+
+{% block style %}
+    <style>
+        #login-card {
+            margin: auto;
+            width: 50%;
+            margin-top: 30px;
+            max-width: 350px;
+            min-width: 350px;
+            padding: 6px;
+        }
+        #login-card .card-title h4 {
+            text-align: center;
+            margin-bottom: 0px;
+        }
+        #login-card .card-body {
+            background: #f2f2f2;
+        }
+        #login-form {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            padding: 0px;
+            margin: 0px;
+        }
+        #login-form input {
+            width: 100%;
+        }
+        #login-form p {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            flex-wrap: wrap;
+            /* width: 100%; */
+        }
+        #login-form p input {
+            width: 350px;
+        }
+        #id_username,
+        #id_email,
+        #id_password,
+        #id_password2 {
+            width: 300px !important;
+            text-align: center;
+        }
+        #register-url {
+            text-decoration: none;
+        }
+        #password-match2 {
+            font-style:italic;
+            margin-bottom: 3px;
+        }
+    </style>
+{% endblock %}
+
+
+{% block content %}
+    <div class="card" id="login-card">
+        <div class="card-title">
+            <h4>Register</h4>
+            <hr>
+        </div>
+        <div class="card-body">
+            <form action="." method="post" id="login-form">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <span id="password-match1"></span>
+                <span id="password-match2"></span>
+                <input type="submit" class="btn btn-primary" name="" id="" value="Register">
+                <a href="{% url 'niziapp:login' %}" id="register-url">Login</a>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block javascript %}
+    <script>
+        let id_username = document.querySelector('#id_username');
+        id_username.focus();
+
+        let id_password1 = document.querySelector('#id_password');
+        let id_password2 = document.querySelector('#id_password2');
+        let password_match1 = document.querySelector('#password-match1');
+        let password_match2 = document.querySelector('#password-match2');
+
+        id_password1.addEventListener('input', e => {
+            e.preventDefault();
+
+            if (e.target.value.length < 6) {
+                password_match2.textContent = 'Password should have at least 6 characters.'
+                password_match2.style.color = 'red';
+            } else {
+                password_match2.textContent = '';
+            }
+        });
+
+        id_password2.addEventListener('input', e => {
+            e.preventDefault();
+
+            if (e.target.value !== id_password1.value) {
+                password_match1.textContent = 'Password do not match.'
+                password_match1.style.color = 'red';
+            } else {
+                password_match1.textContent = 'Password match.'
+                password_match1.style.color = 'green';
+            }
+        })
+    </script>
+{% endblock %}
